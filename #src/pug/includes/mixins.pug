@@ -1,0 +1,22 @@
+mixin myMixin
+	p Это содержимое миксина
+	yield
+	div
+		p Это дополнительное содержимое миксина
+//- 
+mixin listItems
+	ul.list-items
+		li One
+		li Two
+		li Three
+		li Four
+		li Five
+//- 
+mixin article(title)
+	.article
+		.article-wrapper
+			h1= title
+			if block
+				block
+			else
+				p No content provided

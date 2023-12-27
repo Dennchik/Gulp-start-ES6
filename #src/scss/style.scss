@@ -1,0 +1,80 @@
+@import 'core/mixins';
+@import 'core/variables';
+@import 'core/fonts';
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	width: 100%;
+	min-height: 100vh;
+	margin: 0 auto;
+	border: 1px solid green;
+}
+.main-content {
+	flex: 1 1 100%;
+	width: 100%;
+}
+[class^='grid-'] {
+	display: grid;
+	place-self: center;
+}
+
+[class*='_grid-container'] {
+	display: grid;
+	grid-template-columns: auto auto auto;
+}
+
+[class*='_container'] {
+	box-sizing: content-box;
+	max-width: $maxWidthContainer;
+	margin: 0 auto;
+	padding: 0 15px;
+	border: 1px dashed blue;
+}
+
+[class*='_wrap-container'] {
+	max-width: $maxWidth;
+	margin: 0 auto;
+}
+
+[class*='_stretch'] {
+	position: relative;
+	z-index: 0;
+	min-height: calc(100vh - ($headerHeight + $footerHeight));
+	border: 1px solid #3537c5;
+}
+
+@import 'core/reset';
+@import url('https://fonts.googleapis.com/css?family=Play:regular,700&display=swap&subset=cyrillic-ext');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,regular,500,700,900&display=swap&subset=cyrillic-ext');
+@import 'bem-block/main';
+@import 'bem-block/title';
+@import 'bem-block/news';
+// -----------------------------------------------------------------------------
+.list {
+	// .list__item
+
+	&__item {
+		@extend %for-grids;
+	}
+
+	// .list__item--active
+
+	&__item--active {
+	}
+}
+.myslider {
+	border: 1px solid red;
+	// .myslider__slide
+	&__slide {
+		// .myslider__slide_active
+		&_active {
+		}
+	}
+}
+.main-content {
+	// .main-content__myslider
+	&__myslider {
+		padding: 20px;
+	}
+}

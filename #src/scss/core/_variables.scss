@@ -1,0 +1,17 @@
+$minWidth: 320px;
+$maxWidth: 1400px;
+$maxWidthContainer: 1140px;
+$headerHeight: 139px;
+$footerHeight: 139px;
+$font-family: 'UniSansHeavyCaps', sans-serif;
+$bgColor: rgb(2, 38, 52);
+$fontColor: #fff;
+$FontSize: 20px;
+$font-path: '../fonts';
+%for-grids {
+	min-height: 1px;
+	position: relative;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 20px;
+}

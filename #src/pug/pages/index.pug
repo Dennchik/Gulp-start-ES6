@@ -1,0 +1,31 @@
+extends ../layout/app
+block page 
+	include ../includes/mixins.pug
+	div(class="wrapper")#name
+		include ../chunk/header
+		main.main-content._container 
+			.main-content
+				._title
+					h1 Главная!!
+			._body.-linf
+				ul.list  
+					each item  in news
+						.items 
+							h3.item= item.name
+							p.text= item.body
+				+listItems
+				+myMixin
+					p This is my
+					p Amazing article
+				+article('Hello world!!')
+				+article('Hello world!!!!')
+			.menu-page
+				._title._trigger-click
+				._slide
+					img(alt="Изображение" src="img/cover.jpg")
+				._slide.-active Content
+				._slide Content	!!!!!!!!!!!!
+					p._text Good weather!
+					p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur explicabo porro possimus quo sunt. Cumque dolores dolorum expedita illo modi numquam praesentium. Expedita facere nesciunt nisi, obcaecati quod	rerum sapiente!
+					p |Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur, aliquam dolores aut eos voluptatibus expedita quasi, incidunt necessitatibus voluptatum earum itaque a. Dolorem sed fuga maiores totam ut consectetur ratione?
+		include ../chunk/footer

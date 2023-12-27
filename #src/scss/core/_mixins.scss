@@ -1,0 +1,61 @@
+@mixin font-face($font_name, $file_name, $weight, $style) {
+  @font-face {
+    font-family: $font_name;
+    font-display: swap;
+    src:
+      url('#{$font-path}/#{$file_name}.eot') format('eot'),
+      url('#{$font-path}/#{$file_name}.woff') format('woff'),
+      url('#{$font-path}/#{$file_name}.woff2') format('woff2'),
+      url('#{$font-path}/#{$file_name}.ttf') format('truetype');
+    font-weight: #{$weight};
+    font-style: #{$style};
+  }
+}
+
+@mixin _1260 {
+  @media (max-width: 1260px) {
+    @content;
+  }
+}
+
+@mixin _1400 {
+  @media (max-width: 1400px) {
+    @content;
+  }
+}
+
+@mixin _1024 {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin _895 {
+  @media (max-width: 895px) {
+    @content;
+  }
+}
+
+@mixin _860 {
+  @media (max-width: 860px) {
+    @content;
+  }
+}
+
+@mixin _760 {
+  @media (max-width: 760px) {
+    @content;
+  }
+}
+
+@mixin _min-1024_max-1440 {
+  @media (min-width: 1024.98px) and (max-width: 1440px) {
+    @content;
+  }
+}
+
+@mixin _min-760_max-1400 {
+  @media (min-width: 760px) and (max-width: 1400px) {
+    @content;
+  }
+}
