@@ -2,70 +2,64 @@ global.$ = {
 	//* Plugins
 	gulp: require('gulp'),
 	gul: require('gulp-load-plugins')(),
+	browserSync: require('browser-sync').create(),
 	sass: require('gulp-sass')(require('sass')),
+	gulpSvgSprite: require('gulp-svg-sprite'),
+	webPackStream: require('webpack-stream'),
+	merge: require('gulp-merge-json'),
 	gulpIf: require('gulp-if'),
+	del: require('del'),
+	fs: require('fs'),
 	//* Configuration
-	path: require('./config/path'),
 	app: require('./config/app'),
 };
-import gulp from 'gulp';
-import browserSync from 'browser-sync';
 //* Configuration
 import path from './config/path.js';
 import app from './config/app.js';
 //* Tasks
-import requireDir from 'require-dir';
-const task = requireDir('./task', { recurse: true });
-//* Tasks
 import clear from './task/clear';
 import pug from './task/pug';
-import scss from './task/scss';
 import js from './task/js';
+import json from './task/json';
+import html from './task/html';
+import scss from './task/scss';
 import image from './task/image';
-import fonts from './task/fonts';
-import clearFonts from './task/clearFonts';
-import clearEnd from './task/clearEnd';
-import fontsStyle from './task/fontStyle';
-import final from './task/final';
+import sprite from './task/sprite';
+import server from './task/server';
 
-//* Server
-const server = () => {
-	browserSync.init({
-		server: {
-			baseDir: path.root,
-		},
-	});
-};
-const change = gulp.series(clearFonts, fonts, fontsStyle);
+import clearFonts from './task/clearFonts';
+import fonts from './task/fonts';
+import fontsStyle from './task/fontStyle';
+
+const change = $.gulp.series(clearFonts, fonts, fontsStyle);
 //* Observation
 const watcher = () => {
-	$.gulp.watch(path.pug.watch, pug).on('all', browserSync.reload);
-	$.gulp.watch(path.scss.watch, scss).on('all', browserSync.reload);
-	$.gulp.watch(path.js.watch, js).on('all', browserSync.reload);
-	$.gulp.watch(path.image.watch, image).on('all', browserSync.reload);
-	$.gulp.watch(path.fonts.watch, fonts).on('all', browserSync.reload);
-	$.gulp.watch(path.fontsStyle.watch, change).on('all', browserSync.reload);
+	$.gulp.watch(path.js.watch, js).on('all', $.browserSync.reload);
+	$.gulp.watch(path.pug.watch, pug).on('all', $.browserSync.reload);
+	$.gulp.watch(path.json.watch, json).on('all', $.browserSync.reload);
+	$.gulp.watch(path.json.readFile, pug).on('all', $.browserSync.reload);
+	$.gulp.watch(path.scss.watch, scss).on('all', $.browserSync.reload);
+	$.gulp.watch(path.image.watch, image).on('all', $.browserSync.reload);
+	$.gulp.watch(path.sprite.watch, sprite).on('all', $.browserSync.reload);
+	$.gulp.watch(path.fonts.watch, fonts).on('all', $.browserSync.reload);
+	$.gulp.watch(path.fontsStyle.watch, change).on('all', $.browserSync.reload);
 };
-const end = gulp.series(
-	clear,
-	clearEnd,
-	gulp.parallel(pug, scss, js, image, fonts),
-	fontsStyle,
-	final);
-const dev = gulp.series(
-	end,
-	$.gulp.parallel(watcher, server),
+const end = $.gulp.series(
+	clear, json,
+	$.gulp.parallel(pug, image, sprite, scss, js, fonts), fontsStyle
 );
-
+const dev = $.gulp.series(end, $.gulp.parallel(watcher, server));
 //* Call back
 export { clear };
 export { clearFonts };
 export { pug };
+export { json };
+export { html };
 export { scss };
 export { js };
 export { image };
+export { sprite };
 export { fonts };
 export { fontsStyle };
-export { final };
 //* Assembly
 export default app.isProd ? end : dev;

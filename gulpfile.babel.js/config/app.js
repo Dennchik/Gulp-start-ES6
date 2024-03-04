@@ -1,10 +1,8 @@
 import news from '../../#src/data/news.json';
-import pngquant from "imagemin-pngquant";
-import recompress from "imagemin-jpeg-recompress";
-import loadPlugins from "gulp-load-plugins";
-import pugbem from "pug-bem";
-
-const gul = loadPlugins();
+// import pngquant from "imagemin-pngquant";
+// import recompress from "imagemin-jpeg-recompress";
+import pugbem from "gulp-pugbem";
+import imagemin from "gulp-imagemin";
 const isProd = process.argv.includes("--production");
 const isDev = !isProd;
 
@@ -13,28 +11,85 @@ export default {
 	isDev: isDev,
 
 	webpack: {
-		mode: isProd ? "production" : "development"
-	},
-	pugMin: {
-		pretty: isDev,
-		plugins: [pugbem],
-		data: {
-			news: news
+		mode: isProd ? 'production' : 'development',
+		entry: {
+			// script: './#src/js/script.js',
+			main: './#src/js/main.js'
+		},
+		output: {
+			filename: '[name].min.js',
+		},
+		module: {
+			rules: [
+				{
+					test: /\.css$/,
+					use: ['style-loader', 'css-loader', 'js-loader'],
+				},
+			],
 		},
 	},
-	htmlMin: {
-		collapseWhitespace: isProd
+	svgSpr: {
+		shape: {
+			id: {
+				separator: '--',
+				pseudo: '~',
+				whitespace: '_'
+			},
+			dimension: { // Set maximum dimensions
+				maxWidth: 500,
+				maxHeight: 500
+			},
+			spacing: { // Add padding
+				padding: 0
+			},
+			transform: [{
+				svgo: {
+					plugins: [
+						"cleanupAttrs",
+						"convertColors",
+						"removeEmptyAttrs"
+					]
+				}
+			}],
+		},
+		mode: {
+			defs: {
+				dest: './',
+				sprite: './sprite.svg',
+			},
+		},
 	},
-	fonter: {
-		formats: ['ttf', 'woff', 'eot', 'svg'],
+	pug: {
+		pretty: true,
+		plugins: [pugbem]
+	},
+	htmlMin: {
+		collapseWhitespace: true
 	},
 	renameScss: {
 		extname: '.css',
 		suffix: '.min',
 	},
+	fonter: {
+		formats: ['ttf', 'woff', 'eot', 'svg'],
+	},
 	renameJs: {
 		extname: '.js',
 		suffix: '.min',
+	},
+	svgMin: {
+		js2svg: {
+			indent: 4,
+			pretty: true
+		}
+	},
+	cheerio: {
+		run: function ($) {
+			$('[fill]').removeAttr('fill');
+			$('[stroke]').removeAttr('stroke');
+			$('[style]').removeAttr('style');
+		},
+		parserOptions: { xmlMode: true }
 	},
 	autoprefixer: {
 		cascade: false,
@@ -47,28 +102,47 @@ export default {
 			"Opera >= 12"
 		]
 	},
-	imagemin: ({
-		verbose: true,
-		interlaced: true,
-		progressive: true,
-		optimizationLevel: 5,
-	}
-	[
-		recompress({
-			loops: 6,
-			min: 50,
-			max: 90,
-			quality: 'high',
-			use: [pngquant({
-				quality: [0.8, 1],
-				strip: true,
-				speed: 1
-			})],
+	// imagemin: ({
+	// 	verbose: true,
+	// 	interlaced: true,
+	// 	progressive: true,
+	// 	optimizationLevel: 5,
+	// }
+	// [
+	// 	recompress({
+	// 		loops: 6,
+	// 		min: 50,
+	// 		max: 90,
+	// 		quality: 'high',
+	// 		use: [pngquant({
+	// 			quality: [0.8, 1],
+	// 			strip: true,
+	// 			speed: 1
+	// 		})],
+	// 	})
+	// ]
+	// ),
+	imagemin: ([
+		imagemin.svgo({
+			plugins: [
+				{ optimizationLevel: 5 },
+				{ progessive: true },
+				{ interlaced: true },
+				{ removeViewBox: false },
+				{ removeUselessStrokeAndFill: false },
+				{ cleanupIDs: false }
+			],
 		}),
-		gul.imagemin.gifsicle(),
-		gul.imagemin.optipng(),
-		gul.imagemin.svgo()
-	]
-	),
+		imagemin.gifsicle(
+			{ interlaced: true }
+		),
+		imagemin.optipng({
+			optimizationLevel: 5
+		}),
+		imagemin.mozjpeg({
+			quality: 75,
+			progressive: true
+		}),
+	])
 }
 

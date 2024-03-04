@@ -15,7 +15,8 @@ export default () => {
 		.pipe($.gulp.dest(path.image.dest))
 		.pipe($.gulp.src(path.image.src))
 		.pipe($.gul.newer(path.image.dest))
+		.pipe($.gulpIf(app.isProd, $.gul.size({ title: "До сжатия-Image:" })))
 		.pipe($.gulpIf(app.isProd, $.gul.imagemin(app.imagemin)))
-		.pipe($.gul.size({ title: "После сжатия-image:" }))
+		.pipe($.gulpIf(app.isProd, $.gul.size({ title: "После сжатия-image:" })))
 		.pipe($.gulp.dest(path.image.dest));
 };

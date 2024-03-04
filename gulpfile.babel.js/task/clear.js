@@ -1,8 +1,6 @@
-//* Удаление директории - Build
-import del from "del";
 //* Конфигурация
 import path from "../config/path.js";
-//* Удаление директории
+//* Deleting a directory - Build 
 export default () => {
-	return del(path.root)
-}
+	return $.del(path.root);
+};

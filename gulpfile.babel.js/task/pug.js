@@ -1,7 +1,6 @@
 // //* Configuration
-import path from "../config/path.js";
-import app from "../config/app.js";
-
+import path from '../config/path.js';
+import app from '../config/app.js';
 //* Processing - Pug
 export default () => {
 	return $.gulp.src(path.pug.src)
@@ -11,7 +10,12 @@ export default () => {
 				message: error.message
 			}))
 		}))
-		.pipe($.gul.pug(app.pugMin))
+		.pipe($.gul.data(function () {
+			return JSON.parse($.fs.readFileSync(path.json.readFile));
+		}))
+		.pipe($.gul.pug(app.pug))
+		.pipe($.gul.fileInclude())
 		.pipe($.gul.webpHtml())
+		.pipe($.gul.htmlmin(app.htmlMin))
 		.pipe($.gulp.dest(path.pug.dest));
 };

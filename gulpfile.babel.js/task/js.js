@@ -1,8 +1,6 @@
 //* Configuration
 import path from "../config/path.js";
 import app from "../config/app.js";
-//* Plugins
-import webPack from "webpack-stream";
 //* Processing JavaScript
 export default () => {
 	return $.gulp.src(path.js.src)
@@ -13,7 +11,7 @@ export default () => {
 			}))
 		}))
 		.pipe($.gul.babel())
-		.pipe(webPack(app.webpack))
+		.pipe($.webPackStream(app.webpack))
 		.pipe($.gulpIf(app.isDev, $.gul.sourcemaps.init({
 			loadMaps: true
 		})))

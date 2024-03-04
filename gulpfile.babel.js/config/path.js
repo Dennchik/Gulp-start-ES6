@@ -5,14 +5,21 @@ const pathEnd = "./public";
 export default {
 	root: pathDest,
 
+	json: {
+		fileName: 'data.json',
+		src: pathSrc + '/data/*.json',
+		watch: pathSrc + '/data/*.json',
+		dest: pathSrc + '/data/temp',
+		readFile: pathSrc + '/data/temp/data.json'
+	},
 	pug: {
-		src: pathSrc + '/pug/pages/**/*.pug',
-		watch: pathSrc + '/pug/**/*.pug',
-		dest: pathDest,
+		src: pathSrc + '/pug/pages/**/*{.pug,jade}',
+		watch: pathSrc + '/pug/**/*.{pug,jade}',
+		dest: pathDest
 	},
 	html: {
-		src: pathSrc + "/*.html",
-		watch: pathSrc + "/**/*.html",
+		src: pathDest + '/*.html',
+		watch: pathDest + '/**/*.html',
 		dest: pathDest
 	},
 	scss: {
@@ -20,25 +27,20 @@ export default {
 		watch: pathSrc + '/scss/**/*.{sass,scss}',
 		dest: pathDest + '/css',
 	},
-	css: {
-		src: pathSrc + "/css/*.css",
-		watch: pathSrc + "/css/**/*.css",
-		dest: pathDest + "/css"
-	},
-	endCss: {
-		src: pathDest + "/**/*.css",
-		watch: pathDest + "/**/*.css",
-		dest: pathEnd + "/css"
-	},
 	js: {
 		src: pathSrc + "/js/*.js",
 		watch: pathSrc + "/js/**/*.js",
 		dest: pathDest + "/js"
 	},
 	image: {
-		src: pathSrc + "/img/**/*.{png,jpg,jpeg,gif,svg,ico}",
-		watch: pathSrc + "/img/**/*.{png,jpg,jpeg,gif,svg,ico}",
-		dest: pathDest + "/img"
+		src: [pathSrc + '/img/**/*.{png,jpg,jpeg,gif,svg,ico}', '!/img/svg/*.svg'],
+		watch: pathSrc + '/img/**/*.{png,jpg,jpeg,gif,svg,ico}',
+		dest: pathDest + '/img/',
+	},
+	sprite: {
+		src: pathSrc + '/img-sprite/**/*.svg',
+		watch: pathSrc + '/img-sprite/**/*.svg',
+		dest: pathDest + '/img/sprites'
 	},
 	fonts: {
 		src: pathSrc + "/fonts/*.{eot,ttf,otf,otc,ttc,woff,woff2,svg}",
@@ -50,14 +52,7 @@ export default {
 		watch: pathSrc + '/scss/**/**.{eot,ttf,otf,otc,ttc,woff,woff2,svg}',
 		dest: pathDest + '/fonts/',
 	},
-	final: {
-		src: pathDest + "/**/*.*",
-		dest: pathEnd
-	},
-}
-
-
-
-
-
-
+	clearFonts: {
+		watch: pathSrc + '/fonts/**/*.{eot,ttf,otf,otc,ttc,woff,woff2,svg}',
+	}
+}; 
